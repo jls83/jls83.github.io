@@ -5,14 +5,15 @@ title = "Joseph L. Sanders"
 languageCode = "en-us"
 defaultcontentlanguage = "en"
 
-theme = "anatole"
+theme = "hugo-coder"
+pygmentsstyle = "friendly"
 
 [params]
     author = "Joseph Sanders"
     info = "Errata Ad Nauseam"
     avatarurl = "/jls_profile.png"
 
-    inverted = true
+    colorscheme = "light"
 
 [[menu.main]]
     url = "/"
@@ -43,17 +44,17 @@ theme = "anatole"
 [[params.social]]
     url = "https://github.com/jls83/"
     name = "GitHub"
-    icon = "fas fa-github fa-2x"
+    icon = "fab fa-github fa-2x"
     weight = 2
 
 [[params.social]]
     url = "https://www.linkedin.com/in/josephlsanders/"
     name = "LinkedIn"
-    icon = "fas fa-linkedin fa-2x"
+    icon = "fab fa-linkedin fa-2x"
     weight = 3
 
 [[params.social]]
     url = "https://stackoverflow.com/users/5209981/jls83"
     name = "Stack Overflow"
-    icon = "fas fa-stack-overflow fa-2x"
+    icon = "fab fa-stack-overflow fa-2x"
     weight = 4
