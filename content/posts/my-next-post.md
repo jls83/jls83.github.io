@@ -1,7 +1,7 @@
 ---
 title: "My Next Post"
 date: 2020-09-18T15:18:15-04:00
-draft: true
+draft: false
 categories:
     - Development
 tags:
