@@ -9,7 +9,7 @@ theme = "hugo-coder"
 pygmentsstyle = "friendly"
 
 [params]
-    author = "Joseph Sanders"
+    author = "Joseph L. Sanders"
     info = "Errata Ad Nauseam"
     avatarurl = "/jls_profile.png"
 
