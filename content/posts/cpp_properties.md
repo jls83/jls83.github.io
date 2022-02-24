@@ -12,6 +12,7 @@ tags:
 - polymorphism
 ---
 
+### Inheritance In Python & JavaScript
 So here's a fun thing that bit me on my C++ learning journey. In my previous experience with Python, it was (relatively) common to set a property (or properties) on a base class, then make use of that property within the methods of that base class.
 ```python
 class Base:
@@ -65,6 +66,7 @@ console.log("From foo:", foo.get_num()); // Prints "From foo: 0"
 console.log("From bar:", bar.get_num()); // Prints "From bar: 1"
 ```
 
+### Inheritance In C++ - First Attempt
 In C++ things are a bit different. Let's start with our base class one more time.
 ```cpp
 class Base {
@@ -126,6 +128,7 @@ int main() {
 
 Horsefeathers! Unfortunately, C++ diverges from Python & JavaScript on this pattern. When we call `Derived::getInt()`, we're _actually_ calling `Base::getInt()`, as the `getInt` method is not defined for the `Derived` class. Additionally if `Derived` inherits from `Base`, and they both define a member named `some_int_`, _both of the variables exist independently at the same time_ (credit to [this Stack Overflow post](https://stackoverflow.com/a/23776250) for the language there). This is in direct opposition to the way Python & JavaScript operate, where defining a member in a derived class essentially erases the base class's definition of that member.
 
+### Inheritance In C++ - Second Attempt
 To make this sort of pattern work, we also have to re-declare the `getInt` method on the `Derived` class.
 ```cpp
 class Derived : public Base {
@@ -138,7 +141,10 @@ class Derived : public Base {
 
 This forces `Derived::getInt()` to look "locally" for the `some_int_` variable, which then returns the right value.
 
-However! This doesn't feel quite right to me. Aside from the duplication of code, it's perhaps a bit too-contrived of an example. Let's revisit the idea of providing an explicit, parameterized constructor for the `Base` class. We'll include `some_int` as an argument to this constructor.
+However! This doesn't feel quite right to me. Aside from the duplication of code, it's perhaps a bit too-contrived of an example.
+
+### Inheritance In C++ - Third Attempt
+Let's revisit the idea of providing an explicit, parameterized constructor for the `Base` class. We'll include `some_int` as an argument to this constructor.
 ```cpp
 class Base {
     public:
