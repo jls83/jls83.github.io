@@ -1,7 +1,9 @@
 ---
+title: C++ Inherited Properties
 categories:
 - C++
 date: "2022-02-24"
+publishdate: "2022-02-24"
 tags:
 - c++
 - python
