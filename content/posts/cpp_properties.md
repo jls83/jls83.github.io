@@ -210,7 +210,7 @@ int main() {
 
     // Prints:
     // From foo: 0
-    // From bar: 0
+    // From bar: 1
 }
 ```
 
