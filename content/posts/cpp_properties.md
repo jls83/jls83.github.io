@@ -1,7 +1,7 @@
 ---
 title: C++ Inherited Properties
 categories:
-- C++
+- Programming
 date: "2022-02-24"
 publishdate: "2022-02-24"
 tags:
@@ -36,8 +36,12 @@ if __name__ == "__main__":
     foo = Base()
     bar = Derived()
 
-    print("From foo:", foo.get_int())  # prints "From foo: 0"
-    print("From bar:", bar.get_int())  # prints "From bar: 1"
+    print("From foo:", foo.get_int())
+    print("From bar:", bar.get_int())
+
+    # Prints:
+    # From foo: 0
+    # From bar: 1
 ```
 
 In ES6-flavored JavaScript, things work in a similar way.
@@ -62,8 +66,12 @@ class Derived extends Base {
 const foo = new Base();
 const bar = new Derived();
 
-console.log("From foo:", foo.get_num()); // Prints "From foo: 0"
-console.log("From bar:", bar.get_num()); // Prints "From bar: 1"
+console.log("From foo:", foo.get_num());
+console.log("From bar:", bar.get_num());
+
+// Prints:
+// From foo: 0
+// From bar: 1
 ```
 
 ### Inheritance In C++ - First Attempt
@@ -120,9 +128,13 @@ int main() {
     Base foo = Base();
     Derived bar = Derived();
 
-    printf("From foo: %d\n", foo.getInt());  // Prints "From foo: 0"
-    printf("From bar: %d\n", bar.getInt());  // Prints "From bar: 0"
+    printf("From foo: %d\n", foo.getInt());
+    printf("From bar: %d\n", bar.getInt());
     return 0;
+
+    // Prints:
+    // From foo: 0
+    // From bar: 0
 }
 ```
 
@@ -137,6 +149,12 @@ class Derived : public Base {
         int getInt() { return some_int_; } // <<<<
     private:
         int some_int_;
+
+    // SNIP
+
+    // Prints:
+    // From foo: 0
+    // From bar: 1
 ```
 
 This forces `Derived::getInt()` to look "locally" for the `some_int_` variable, which then returns the right value.
@@ -186,9 +204,13 @@ int main() {
     Base foo = Base();
     Derived bar = Derived();
 
-    printf("From foo: %d\n", foo.getInt()); // Prints "From foo: 0"
-    printf("From bar: %d\n", bar.getInt()); // Prints "From bar: 1"
+    printf("From foo: %d\n", foo.getInt());
+    printf("From bar: %d\n", bar.getInt());
     return 0;
+
+    // Prints:
+    // From foo: 0
+    // From bar: 0
 }
 ```
 
