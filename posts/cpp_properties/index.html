@@ -152,7 +152,7 @@ console.log(<span style=color:#4070a0>&#34;From bar:&#34;</span>, bar.get_num())
 
     <span style=color:#60a0b0;font-style:italic>// Prints:
 </span><span style=color:#60a0b0;font-style:italic></span>    <span style=color:#60a0b0;font-style:italic>// From foo: 0
-</span><span style=color:#60a0b0;font-style:italic></span>    <span style=color:#60a0b0;font-style:italic>// From bar: 0
+</span><span style=color:#60a0b0;font-style:italic></span>    <span style=color:#60a0b0;font-style:italic>// From bar: 1
 </span><span style=color:#60a0b0;font-style:italic></span>}
 </code></pre></div><p>Ahh, now that&rsquo;s more like it! Though we&rsquo;re still actually calling <code>Base::getInt()</code> when calling <code>bar.getInt()</code> in the example above, the underlying value is set appropriately because of the way we&rsquo;ve written the constructors. The overall shape of the code ends up looking pretty darn similar, just with a subtle difference in where we do the variable &ldquo;override&rdquo; thanks to the polymorphic constructor on the <code>Base</code> class.</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
 2022
