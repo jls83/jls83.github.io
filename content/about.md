@@ -1,5 +1,6 @@
 ---
 slug: "about"
+title: "About"
 draft: false
 ---
 
