@@ -1,0 +1,146 @@
+<!doctype html><html lang=en><head><title>Migrating from Pinboard to Linkding (Part 1) · Joseph L. Sanders</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="Joseph L. Sanders"><meta name=description content="I recently migrated my bookmarks from Pinboard to Linkding. There were a number of factors that led me to make this move, as well as some cool technical challenges I solved along the way. In part 1 of this series, I&rsquo;ll talk about why I switched & some of the tooling I created to automate the migration.
+Reasons for Migrating Link to heading Why Use Linkding? Link to heading Linkding is an open-source, self-hosted bookmark manager with excellent support for Docker deployment."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Migrating from Pinboard to Linkding (Part 1)"><meta name=twitter:description content="I recently migrated my bookmarks from Pinboard to Linkding. There were a number of factors that led me to make this move, as well as some cool technical challenges I solved along the way. In part 1 of this series, I&rsquo;ll talk about why I switched & some of the tooling I created to automate the migration.
+Reasons for Migrating Link to heading Why Use Linkding? Link to heading Linkding is an open-source, self-hosted bookmark manager with excellent support for Docker deployment."><meta property="og:title" content="Migrating from Pinboard to Linkding (Part 1)"><meta property="og:description" content="I recently migrated my bookmarks from Pinboard to Linkding. There were a number of factors that led me to make this move, as well as some cool technical challenges I solved along the way. In part 1 of this series, I&rsquo;ll talk about why I switched & some of the tooling I created to automate the migration.
+Reasons for Migrating Link to heading Why Use Linkding? Link to heading Linkding is an open-source, self-hosted bookmark manager with excellent support for Docker deployment."><meta property="og:type" content="article"><meta property="og:url" content="/posts/migrating_to_linkding_part_1/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-07-16T00:00:00+00:00"><meta property="article:modified_time" content="2023-07-16T00:00:00+00:00"><link rel=canonical href=/posts/migrating_to_linkding_part_1/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.5adbe72fc41dcfb852215b84695288939b6b606db73238bd3ee936469572fc9c.css integrity="sha256-WtvnL8Qdz7hSIVuEaVKIk5trYG23Mji9Puk2RpVy/Jw=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=/images/favicon.svg sizes=any><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-light"><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Joseph L. Sanders</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/>Home</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li><li class=navigation-item><a class=navigation-link href=/projects/>Projects</a></li><li class=navigation-item><a class=navigation-link href=/posts/>Posts</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=/posts/migrating_to_linkding_part_1/>Migrating from Pinboard to Linkding (Part 1)</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2023-07-16T00:00:00Z>July 16, 2023</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+5-minute read</span></div><div class=categories><i class="fa fa-folder" aria-hidden=true></i>
+<a href=/categories/pinboard-to-linkding-migration/>Pinboard-to-Linkding Migration</a></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/pinboard/>pinboard</a></span>
+<span class=separator>•</span>
+<span class=tag><a href=/tags/linkding/>linkding</a></span>
+<span class=separator>•</span>
+<span class=tag><a href=/tags/bookmarks/>bookmarks</a></span>
+<span class=separator>•</span>
+<span class=tag><a href=/tags/self-hosted/>self-hosted</a></span></div></div></header><div class=post-content><p>I recently migrated my bookmarks from Pinboard to Linkding. There were a number of factors that led me to make this move, as well as some cool technical challenges I solved along the way. In part 1 of this series, I&rsquo;ll talk about why I switched & some of the tooling I created to automate the migration.</p><h2 id=reasons-for-migrating>Reasons for Migrating
+<a class=heading-link href=#reasons-for-migrating><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><h3 id=why-use-linkding>Why Use Linkding?
+<a class=heading-link href=#why-use-linkding><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p><a href=https://github.com/sissbruecker/linkding class=external-link target=_blank rel=noopener>Linkding</a> is an open-source, self-hosted bookmark manager with excellent support for Docker deployment. It&rsquo;s written using the Django web framework in Python and includes a well-designed REST API. Having the code available gives me some peace of mind&ndash;if the creator decides to stop supporting the project, I&rsquo;m free to keep my server running & fork the source code.</p><p>Many of the features that I love in Pinboard (e.g. tagging, archiving) are either directly supported or have similar functionality. For archiving, Linkding supports sending your pages to the <a href=https://archive.org/ class=external-link target=_blank rel=noopener>Internet Archive</a>. This doesn&rsquo;t allow &ldquo;local&rdquo; storage of the archived sites, but does support Wayback Machine lookups if the site had been previously archived.</p><h3 id=why-leave-pinboard>Why Leave Pinboard?
+<a class=heading-link href=#why-leave-pinboard><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>I&rsquo;ve experienced a number of service degradations in the past few months, including a site outage and bugs in the Chrome extension. I also experienced an issue with archiving (a paid feature) earlier this year. An attempt to reach the support team via email went unanswered, though the feature was eventually brought back online.</p><p>It&rsquo;s evident that the maintainer & his team are either too overwhelmed to keep up with maintenance, or are satisfied with the performance & feature set of the site (they are called Nine Fives software, after all). Relying on a closed-source application for my bookmarking was already a risky proposition, but the instability of Pinboard led me to look at alternatives.</p><h2 id=technical-requirements--solutions>Technical Requirements & Solutions
+<a class=heading-link href=#technical-requirements--solutions><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><h3 id=getting-linkding-set-up>Getting Linkding Set Up
+<a class=heading-link href=#getting-linkding-set-up><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>I&rsquo;ve settled on a Docker + reverse proxy setup for my self-hosted services. I run most of these on a DigitalOcean droplet, though I have a homelab for things I don&rsquo;t want to expose to the internet. This warrants another post, but here&rsquo;s a quick summary:</p><ol><li>Set up an A record for your new app</li><li>On the droplet, create the container infrastructure:<ul><li><code>docker-compose.yml</code> (Linkding includes an <a href=https://github.com/sissbruecker/linkding/blob/master/docker-compose.yml class=external-link target=_blank rel=noopener>example file</a>)</li><li>A systemd service file</li><li>An entry in the reverse proxy&rsquo;s config</li></ul></li><li>Start up the service</li><li>Generate an SSL certificate</li><li>Confirm operation!</li></ol><p>This should leave you with a functioning server hosted on your domain with HTTPS support. Once the service is up & running we can get started on importing our bookmarks into Linkding.</p><h3 id=pinboard-export-format>Pinboard Export Format
+<a class=heading-link href=#pinboard-export-format><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>To start, I downloaded a JSON dump of my Pinboard bookmarks. This gives us an array of objects representing each of the bookmarks:</p><div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>[
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;href&#34;</span>: <span style=color:#4070a0>&#34;https://davidgraeber.org/articles/against-economics/&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;description&#34;</span>: <span style=color:#4070a0>&#34;Against Economics – David Graeber&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;extended&#34;</span>: <span style=color:#4070a0>&#34;&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;meta&#34;</span>: <span style=color:#4070a0>&#34;28310828d1a7a16f7e86533bb2038349&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;hash&#34;</span>: <span style=color:#4070a0>&#34;fc1397fdccf724b2de01e932fd57a334&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;time&#34;</span>: <span style=color:#4070a0>&#34;2023-06-03T22:22:41Z&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;shared&#34;</span>: <span style=color:#4070a0>&#34;no&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;toread&#34;</span>: <span style=color:#4070a0>&#34;no&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#062873;font-weight:700>&#34;tags&#34;</span>: <span style=color:#4070a0>&#34;economics anarchism&#34;</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#60a0b0;font-style:italic>// snip
+</span></span></span><span style=display:flex><span><span style=color:#60a0b0;font-style:italic></span>]
+</span></span></code></pre></div><p>I care most about the <code>href</code> property (this should go without saying :)), as well as the <code>description</code> and <code>tags</code> fields. The <code>time</code> field represents the time I originally created the bookmark; more on that in a bit!</p><h3 id=pinboard-to-linkding-translation-logic>Pinboard-to-Linkding Translation Logic
+<a class=heading-link href=#pinboard-to-linkding-translation-logic><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>Linkding does support a bulk-upload feature, however (at time of migration) it did not support tag imports. This is a key feature for my use case, so I needed to roll my own import logic.</p><p>I decided to use Python to transform the Pinboard-exported objects to Linkding-compatible objects. Mostly this was translating field names, though I also had to change some string fields (e.g. <code>"shared": string</code> becomes <code>"shared": bool</code>. To make things tidy, I created a <code>PinboardEntry</code> class that encapsulated the translation logic:</p><div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#007020;font-weight:700>class</span> <span style=color:#0e84b5;font-weight:700>PinboardEntry</span>:
+</span></span><span style=display:flex><span>    <span style=color:#555;font-weight:700>@staticmethod</span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>parse_tags</span>(tag_str):
+</span></span><span style=display:flex><span>        <span style=color:#007020;font-weight:700>if</span> <span style=color:#007020;font-weight:700>not</span> tag_str:
+</span></span><span style=display:flex><span>            <span style=color:#007020;font-weight:700>return</span> []
+</span></span><span style=display:flex><span>        <span style=color:#007020;font-weight:700>return</span> tag_str<span style=color:#666>.</span>split(<span style=color:#4070a0>&#34; &#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#555;font-weight:700>@staticmethod</span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>parse_time</span>(time_str):
+</span></span><span style=display:flex><span>        <span style=color:#007020;font-weight:700>return</span> datetime<span style=color:#666>.</span>datetime<span style=color:#666>.</span>strptime(time_str,TIME_SPEC)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#555;font-weight:700>@staticmethod</span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>parse_bool</span>(bool_str):
+</span></span><span style=display:flex><span>        <span style=color:#007020;font-weight:700>return</span> bool_str <span style=color:#666>==</span> <span style=color:#4070a0>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>def</span> __init__(self, href, description, meta, <span style=color:#007020>hash</span>, shared, to_read, time,
+</span></span><span style=display:flex><span>                 tags, extended):
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>url <span style=color:#666>=</span> href
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>title <span style=color:#666>=</span> description
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>description <span style=color:#666>=</span> extended
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>time <span style=color:#666>=</span> PinboardEntry<span style=color:#666>.</span>parse_time(time)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>shared <span style=color:#666>=</span> PinboardEntry<span style=color:#666>.</span>parse_bool(shared)
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>to_read <span style=color:#666>=</span> PinboardEntry<span style=color:#666>.</span>parse_bool(to_read)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>tags <span style=color:#666>=</span> PinboardEntry<span style=color:#666>.</span>parse_tags(tags)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>meta <span style=color:#666>=</span> meta
+</span></span><span style=display:flex><span>        self<span style=color:#666>.</span>hash <span style=color:#666>=</span> <span style=color:#007020>hash</span>
+</span></span></code></pre></div><p>I also added a <code>classmethod</code> to create a new <code>PinboardEntry</code> from the result of Python&rsquo;s <code>json.loads</code> function. This allows for only specific arguments to be sent to the constructor, though it may be a bit too much abstraction:</p><div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#555;font-weight:700>@classmethod</span>
+</span></span><span style=display:flex><span><span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>from_json</span>(cls, json_obj):
+</span></span><span style=display:flex><span>    args <span style=color:#666>=</span> [
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;href&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;description&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;meta&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;hash&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;shared&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;toread&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;time&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;tags&#34;</span>],
+</span></span><span style=display:flex><span>        json_obj[<span style=color:#4070a0>&#34;extended&#34;</span>],
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>return</span> cls(<span style=color:#666>*</span>args)
+</span></span></code></pre></div><p>Finally, we add a <code>to_linkding_format</code> method to get a <code>dict</code> with Linkding&rsquo;s required parameters. I added a stringified version of the extra keys from Pinboard just in case we could make use of them in the future:</p><div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#555;font-weight:700>@property</span>
+</span></span><span style=display:flex><span><span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>notes</span>(self):
+</span></span><span style=display:flex><span>    d <span style=color:#666>=</span> {
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;meta&#34;</span>: self<span style=color:#666>.</span>meta,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;hash&#34;</span>: self<span style=color:#666>.</span>hash,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;time&#34;</span>: self<span style=color:#666>.</span>time<span style=color:#666>.</span>strftime(TIME_SPEC),
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    note_lines <span style=color:#666>=</span> [
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;IMPORTED FROM PINBOARD&#34;</span>,
+</span></span><span style=display:flex><span>        json<span style=color:#666>.</span>dumps(d, sort_keys<span style=color:#666>=</span><span style=color:#007020;font-weight:700>True</span>, indent<span style=color:#666>=</span><span style=color:#40a070>2</span>),
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>return</span> <span style=color:#4070a0>&#34;</span><span style=color:#4070a0;font-weight:700>\n</span><span style=color:#4070a0>&#34;</span><span style=color:#666>.</span>join(note_lines)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#007020;font-weight:700>def</span> <span style=color:#06287e>to_linkding_format</span>(self):
+</span></span><span style=display:flex><span>    res <span style=color:#666>=</span> {
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;url&#34;</span>: self<span style=color:#666>.</span>url,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;title&#34;</span>: self<span style=color:#666>.</span>title,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;description&#34;</span>: self<span style=color:#666>.</span>description,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;notes&#34;</span>: self<span style=color:#666>.</span>notes,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;shared&#34;</span>: self<span style=color:#666>.</span>shared,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;date_added&#34;</span>: self<span style=color:#666>.</span>time<span style=color:#666>.</span>isoformat(),
+</span></span><span style=display:flex><span>        <span style=color:#60a0b0;font-style:italic># Set these to default values.</span>
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;unread&#34;</span>: <span style=color:#007020;font-weight:700>True</span>,
+</span></span><span style=display:flex><span>        <span style=color:#4070a0>&#34;is_archived&#34;</span>: <span style=color:#007020;font-weight:700>False</span>,
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#60a0b0;font-style:italic># Only add this key if we have `tags`; I saw some 400 errors with empty values.</span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>if</span> self<span style=color:#666>.</span>tags:
+</span></span><span style=display:flex><span>        res[<span style=color:#4070a0>&#34;tag_names&#34;</span>] <span style=color:#666>=</span> self<span style=color:#666>.</span>tags
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>return</span> res
+</span></span></code></pre></div><h3 id=making-api-calls>Making API Calls
+<a class=heading-link href=#making-api-calls><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>At this point we have the basic infrastructure required to parse the export & do some data transformation. The remainder is sending HTTP requests to the appropriate endpoints. I used the <a href=https://github.com/spyoungtech/grequests class=external-link target=_blank rel=noopener>grequests library</a> to allow for more performance.</p><div class=highlight><pre tabindex=0 style=background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#60a0b0;font-style:italic># Turn JSON entries into `PinboardEntry` objects</span>
+</span></span><span style=display:flex><span>json_text <span style=color:#666>=</span> read_file(PINBOARD_EXPORT_FILE_NAME)
+</span></span><span style=display:flex><span>json_objs <span style=color:#666>=</span> json<span style=color:#666>.</span>loads(json_text)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pinboard_entries <span style=color:#666>=</span> [PinboardEntry<span style=color:#666>.</span>from_json(json_obj) <span style=color:#007020;font-weight:700>for</span> json_obj <span style=color:#007020;font-weight:700>in</span> json_objs]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#60a0b0;font-style:italic># Send each `PinboardEntry` to the Linkding API</span>
+</span></span><span style=display:flex><span>rs <span style=color:#666>=</span> (
+</span></span><span style=display:flex><span>    grequests<span style=color:#666>.</span>post(
+</span></span><span style=display:flex><span>        LINKDING_ENDPOINT_URL,
+</span></span><span style=display:flex><span>        data<span style=color:#666>=</span>pinboard_entry<span style=color:#666>.</span>to_linkding_format(),
+</span></span><span style=display:flex><span>        headers<span style=color:#666>=</span>auth_header,
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#007020;font-weight:700>for</span> pinboard_entry <span style=color:#007020;font-weight:700>in</span> pinboard_entries
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>grequests<span style=color:#666>.</span>map(rs, size<span style=color:#666>=</span><span style=color:#40a070>100</span>)
+</span></span></code></pre></div><p>The code for v1 of this script can be found in <a href=https://gist.github.com/jls83/ffc9aae2d5cbe9fb68f5dd5e9443ad79 class=external-link target=_blank rel=noopener>this GitHub gist</a>. You&rsquo;ll need to pass some environment variables for your Linkding API token & the Pinboard export file.</p><h2 id=part-1-conclusion>Part 1 Conclusion
+<a class=heading-link href=#part-1-conclusion><i class="fa fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>At this point we have a nice solution for getting the Pinboard bookmarks into Linkding. However, there is one key feature that I needed: In part 2 of this series, I&rsquo;ll talk about setting the <code>date_added</code> field on bookmarks created via the API so that our original creation order is preserved. Thanks for reading!</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
+2023
+Joseph L. Sanders
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script></body></html>
