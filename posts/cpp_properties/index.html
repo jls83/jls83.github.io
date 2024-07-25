@@ -167,7 +167,7 @@ class Base: def __init__(self): self.some_int = 0 def get_int(self): return self
 </span></span></span><span style=display:flex><span><span style=color:#60a0b0;font-style:italic></span>    <span style=color:#60a0b0;font-style:italic>// From bar: 1
 </span></span></span><span style=display:flex><span><span style=color:#60a0b0;font-style:italic></span>}
 </span></span></code></pre></div><p>Ahh, now that&rsquo;s more like it! Though we&rsquo;re still actually calling <code>Base::getInt()</code> when calling <code>bar.getInt()</code> in the example above, the underlying value is set appropriately because of the way we&rsquo;ve written the constructors. The overall shape of the code ends up looking pretty darn similar, just with a subtle difference in where we do the variable &ldquo;override&rdquo; thanks to the polymorphic constructor on the <code>Base</code> class.</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
-2023
+2024
 Joseph L. Sanders
 ·
 Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script></body></html>
