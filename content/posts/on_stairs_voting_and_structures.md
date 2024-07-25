@@ -1,0 +1,23 @@
++++ 
+draft = true
+date = 2024-07-24T19:52:56-04:00
+title = "On Stairs, Voting, And Structures"
++++
+
+This is a riff on [Voting as Stairs](https://ykhong.com/writes/voting-as-stairs/), an Instagram reel & blog post by YK Hong.
+
+I honestly don't love the analogy. Stairs are static (though a stair car _can_ move around), they connect two or more known points, they provide multiple uses above and beyond their top-line purpose; Hong speaks to this in the article ("There are many different ways to take the stairs..."), but immediately attempts to draw a parallel to voting ("just as there are many different ways to vote"). However, I _do_ think there is something to explore when we consider stairs as an analogy for the norms instituted by the implicit and explicit structures of social control.
+
+![](/images/bluth_stair_car.png)
+
+_Pictured: Voter outreach in Orange County, CA in the early 2000s_
+
+Voting, at least as designed, is a method for enabling a group to make a common choice through the interpretation of messages sent by individual members of the group. Individuals in this system have different strategies they can use to steer outcomes in their favor. Perhaps the most salient example in recent times is the coalition that formed between left-wing and center parties in France to prevent the right-wing from taking power. To view this through the lens of the stairs analogy, we could say the non-right-wing parties decided to take the stairs (voting as a bloc) rather than taking an alternative method to their destination (revolution? secession?).
+
+Zooming out a bit; we're playing with the idea that a tool or a structure can determine the set of options that we consider. As Hong says in the article, even when retrofitting the concrete structures of our society, everything is still "...built around the centering of stairs." Applying that idea back to the other side of the analogy, we can say we've built our society here "within the imperial core" around the idea of voting as the means by which we can get from our current state to our next state. The stairs have been built between the landings, it is our role to climb them to our next destination. We can see voting as a method of social control that we institute upon ourselves.
+
+Is there truth to the idea that "voting is an instrument of social control"? Of course! My home county has two parallel infrastructures in our Board of Elections; one for Democrats and one for Republicans. Perhaps it _is_ the case that there are only two political parties in Nassau County that can handle power. Perhaps it _is_ the case that the staircase we climb only has two landings. I think this is what Hong is getting at in the article; the absurdity of living in an open world in which we are restricted to predetermined paths, to only be allowed a finite set of experiences in an infinite universe. However, we _can_ build ramps, paths, lifts, and other infrastructure to help us fight gravity. One could imagine a world filled with ramps in place of stairs (at least in urban environments!). We have precious few alternatives to voting that do not involve violence.
+
+The other major component of this analogy is the lens of ability & disability. Some people cannot use the stairs, some people made choices about the placement of stairs that did not consider the alternatives (whether out of ignorance, malice, carelessness, etc.). I would have to agree with the core of Hong's argument here as I read it: "a voting system that affects people who are not enfranchised within that system is morally wrong". To apply it to our concrete world; a government that influences a significant portion of the world's population, a vast majority of whom are not enfranchised in our electoral system, is morally wrong. To narrow our focus to "the imperial core", to build & reinforce systems that exclude people who "cannot take the stairs" (e.g. folks who can't stay in line at a polling place, undocumented immigrants, incarcerated people) is morally wrong.
+
+Ultimately, "voting as only way of influencing government" is a deeply flawed idea, much in the way that "the only way to move upwards is to take the stairs" is. However, the "directness" of the stairs-as-voting analogy fails to capture the inherent differences between the set of acceptable alternatives to stairs (and their associated costs) as compared to the few acceptable alternatives to voting. A number of these alternatives may actually be preferable to the current status quo, but the marketing campaign for global collective anarchism (...perhaps a bit of an oxymoron) looks extraordinarily different from the one for elevators.
