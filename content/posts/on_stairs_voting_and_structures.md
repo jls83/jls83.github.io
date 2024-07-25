@@ -1,10 +1,10 @@
 +++ 
-draft = true
+draft = false
 date = 2024-07-24T19:52:56-04:00
 title = "On Stairs, Voting, And Structures"
 +++
 
-This is a riff on [Voting as Stairs](https://ykhong.com/writes/voting-as-stairs/), an Instagram reel & blog post by YK Hong.
+This is a brain dump after reading [Voting as Stairs](https://ykhong.com/writes/voting-as-stairs/), an Instagram reel & blog post by YK Hong. I'm probably going to be editing this and/or taking it down at some point.
 
 I honestly don't love the analogy. Stairs are static (though a stair car _can_ move around), they connect two or more known points, they provide multiple uses above and beyond their top-line purpose; Hong speaks to this in the article ("There are many different ways to take the stairs..."), but immediately attempts to draw a parallel to voting ("just as there are many different ways to vote"). However, I _do_ think there is something to explore when we consider stairs as an analogy for the norms instituted by the implicit and explicit structures of social control.
 
