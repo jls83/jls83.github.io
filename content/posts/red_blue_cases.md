@@ -1,5 +1,5 @@
 +++ 
-draft = true
+draft = false
 date = 2024-08-24T19:00:00-04:00
 title = "A Case for Blue?"
 +++
