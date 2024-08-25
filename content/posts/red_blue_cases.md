@@ -24,7 +24,7 @@ You can't be sure that everyone else got the same message (Is it always in Engli
 
 ### Case 2
 
-You're in a fortified shelter with one way in or out protected with a double-door airlock. Only one person can fit in the airlock at a time, and the airlock may leak after an opening-closing cycle due to the age. You have been told that there is a surely-fatal threat outside the outer-most door (poison gas, a complete lack of oxygen, monsters with a taste for human flesh, etc.). If what you've been told is true, stepping outside the airlock _will_ kill you. But you haven't been outside the shelter in years which has pushed your sanity to the brink. What do you do?
+You're in a fortified shelter with one way in or out protected with a double-door airlock. Only one person can fit in the airlock at a time, and the airlock may leak after an opening-closing cycle due to the age of the seals. You have been told that there is a surely-fatal threat outside the outer-most door (poison gas, a complete lack of oxygen, monsters with a taste for human flesh, etc.). If what you've been told is true, stepping outside the airlock _will_ kill you. But you haven't been outside the shelter in years which has pushed your sanity to the brink. What do you do?
 
 ### Case 3
 
